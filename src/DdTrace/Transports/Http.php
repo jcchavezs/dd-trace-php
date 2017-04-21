@@ -2,14 +2,12 @@
 
 namespace DdTrace\Transports;
 
-use DdTrace\Encoder;
 use DdTrace\EncoderFactory;
 use DdTrace\TracesBuffer;
 use DdTrace\Transport;
 use Exception;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Psr\Log\LoggerInterface;
@@ -42,14 +40,14 @@ class Http implements Transport
         $this->serviceUrl = sprintf("http://%s/v0.3/services", $serviceUrl);
     }
 
-    public function sendTraces(TracesBuffer $traces)
+    public function sendTraces(TracesBuffer $tracesBuffer)
     {
         $response = null;
 
         try {
             $encoder = $this->encoderFactory->build();
 
-            $encoder->encodeTraces($traces);
+            $encoder->encodeTraces($tracesBuffer);
 
             $headers = $this->headers + ["Content-Type" => $encoder->contentType()];
 

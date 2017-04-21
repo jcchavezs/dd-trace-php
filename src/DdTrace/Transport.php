@@ -9,7 +9,7 @@ interface Transport
     /**
      * @return ResponseInterface
      */
-    public function sendTraces(TracesBuffer $traces);
+    public function sendTraces(TracesBuffer $tracesBuffer);
 
     /** @return ResponseInterface */
     public function sendServices(array $services);

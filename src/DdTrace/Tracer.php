@@ -90,21 +90,6 @@ final class Tracer implements TracerInterface
         }
     }
 
-    private function flushServices()
-    {
-        if (!$this->isEnabled || !$this->servicesModified()) {
-            return;
-        }
-
-        try {
-            $this->transport->sendServices($this->services);
-
-            $this->servicesModified = false;
-        } catch (Exception $e) {
-            throw $e;
-        }
-    }
-
     public function isEnabled()
     {
         return $this->isEnabled;
@@ -120,16 +105,6 @@ final class Tracer implements TracerInterface
         $this->isEnabled = false;
     }
 
-    private function hasTransport()
-    {
-        return $this->transport !== null;
-    }
-
-    private function servicesModified()
-    {
-        return false;
-    }
-
     public function enableDebugLogging()
     {
         $this->debugLoggingEnabled = true;
@@ -138,5 +113,30 @@ final class Tracer implements TracerInterface
     public function disableDebugLogging()
     {
         $this->debugLoggingEnabled = false;
+    }
+
+    private function flushServices()
+    {
+        if (!$this->isEnabled || !$this->servicesModified()) {
+            return;
+        }
+
+        try {
+            $this->transport->sendServices($this->services);
+
+            $this->servicesModified = false;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    private function hasTransport()
+    {
+        return $this->transport !== null;
+    }
+
+    private function servicesModified()
+    {
+        return false;
     }
 }

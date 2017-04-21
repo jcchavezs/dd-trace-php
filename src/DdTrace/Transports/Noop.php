@@ -8,7 +8,7 @@ use DdTrace\Transport;
 class Noop implements Transport
 {
 
-    public function sendTraces(TracesBuffer $traces)
+    public function sendTraces(TracesBuffer $tracesBuffer)
     {
 
     }

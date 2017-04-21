@@ -8,26 +8,53 @@ use PHPUnit_Framework_TestCase;
 
 final class SpansCollectionTest extends PHPUnit_Framework_TestCase
 {
+    /** @var SpansCollection */
+    private $spansCollection;
+
+    /** @var array */
+    private $actualMap;
+
     public function testAnSpanCollectionHasTheExpectedLength()
     {
-        $spansCollection = new SpansCollection;
-        $spansCollection->push(SpanBuilder::create()->build());
-        $spansCollection->push(SpanBuilder::create()->build());
-        $this->assertEquals(2, $spansCollection->count());
+        $this->givenAnSpansCollection();
+        $this->whenAddingTwoSpans();
+        $this->thenTheSpansCollectionHasTwoSpans();
     }
 
     public function testAnSpanCollectionCanBeMapped()
     {
-        $spansCollection = new SpansCollection;
-        $spansCollection->push(SpanBuilder::create()->build());
-        $spansCollection->push(SpanBuilder::create()->build());
+        $this->givenAnSpansCollection();
+        $this->whenAddingTwoSpans();
+        $this->whenMappingTheSpansCollection();
+        $this->thenTheMapIsTheExpected();
+    }
 
-        $expectedMap = [1, 1];
+    private function givenAnSpansCollection()
+    {
+        $this->spansCollection = new SpansCollection;
+    }
 
-        $actualMap = $spansCollection->map(function() {
+    private function whenAddingTwoSpans()
+    {
+        $this->spansCollection->push(SpanBuilder::create()->build());
+        $this->spansCollection->push(SpanBuilder::create()->build());
+    }
+
+    private function thenTheSpansCollectionHasTwoSpans()
+    {
+        $this->assertEquals(2, $this->spansCollection->count());
+    }
+
+    private function whenMappingTheSpansCollection()
+    {
+        $this->actualMap = $this->spansCollection->map(function () {
             return 1;
         });
+    }
 
-        $this->assertEquals($expectedMap, $actualMap);
+    private function thenTheMapIsTheExpected()
+    {
+        $expectedMap = [1, 1];
+        $this->assertEquals($expectedMap, $this->actualMap);
     }
 }

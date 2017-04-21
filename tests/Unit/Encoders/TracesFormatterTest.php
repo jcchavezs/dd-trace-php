@@ -9,26 +9,51 @@ use PHPUnit_Framework_TestCase;
 
 final class TracesFormatterTest extends PHPUnit_Framework_TestCase
 {
-    public function testReturnsEmptyOnEmptyTracesBuffer()
-    {
-        $tracesBuffer = new TracesBuffer;
-        $tracesFormatter = new TracesFormatter;
-        $actualFormatted = $tracesFormatter->__invoke($tracesBuffer);
+    private $tracesBuffer;
+    private $actualFormatted;
 
-        foreach ($actualFormatted as $value) {
-            $this->assertTrue(false);
-        }
+    public function testReturnsNoTracesOnEmptyTracesBuffer()
+    {
+        $this->givenAnEmptyTracesBuffer();
+        $this->whenFormattingTheTracesBuffer();
+        $this->thenTheFormatterReturnsAndEmptyOutput();
     }
 
     public function testReturnsTheExpectedArray()
     {
-        $tracesBuffer = new TracesBuffer;
-        $tracesBuffer->push(SpanBuilder::create()->withTraceId(1)->withName("span1")->asFinished()->build());
-        $tracesBuffer->push(SpanBuilder::create()->withTraceId(2)->withName("span2")->asFinished()->build());
-        $tracesFormatter = new TracesFormatter;
-        $actualFormatted = $tracesFormatter->__invoke($tracesBuffer);
+        $this->givenATracesBufferWithTwoSpans();
+        $this->whenFormattingTheTracesBuffer();
+        $this->thenTheFormatterOutputsTheExpectedOutput();
+    }
 
-        foreach ($actualFormatted as $i => $formattedSpanArray) {
+    private function givenAnEmptyTracesBuffer()
+    {
+        $this->tracesBuffer = new TracesBuffer;
+    }
+
+    private function givenATracesBufferWithTwoSpans()
+    {
+        $this->tracesBuffer = new TracesBuffer;
+        $this->tracesBuffer->push(SpanBuilder::create()->withTraceId(1)->withName("span1")->asFinished()->build());
+        $this->tracesBuffer->push(SpanBuilder::create()->withTraceId(2)->withName("span2")->asFinished()->build());
+    }
+
+    private function whenFormattingTheTracesBuffer()
+    {
+        $tracesFormatter = new TracesFormatter;
+        $this->actualFormatted = $tracesFormatter->__invoke($this->tracesBuffer);
+    }
+
+    private function thenTheFormatterReturnsAndEmptyOutput()
+    {
+        foreach ($this->actualFormatted as $value) {
+            $this->assertTrue(false);
+        }
+    }
+
+    private function thenTheFormatterOutputsTheExpectedOutput()
+    {
+        foreach ($this->actualFormatted as $i => $formattedSpanArray) {
             $this->assertArraySubset([
                 'trace_id' => $i + 1,
                 'name' => sprintf("span%d", $i + 1)
