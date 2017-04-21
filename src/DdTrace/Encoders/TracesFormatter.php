@@ -12,10 +12,6 @@ class TracesFormatter
     /** @return Iterator */
     public function __invoke(TracesBuffer $tracesBuffer)
     {
-        if ($tracesBuffer->count() === 0) {
-            return [];
-        }
-
         /** @var SpansCollection $spansCollection */
         foreach ($tracesBuffer as $spansCollection) {
             yield $spansCollection->map(function(Span $span) {
