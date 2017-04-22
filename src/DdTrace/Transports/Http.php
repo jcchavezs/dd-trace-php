@@ -107,6 +107,6 @@ class Http implements Transport
 
     public function setHeader($key, $value)
     {
-        $this->headers[$key] = $value;
+        $this->headers[(string) $key] = (string) $value;
     }
 }
