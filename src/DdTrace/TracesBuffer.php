@@ -61,4 +61,9 @@ final class TracesBuffer implements Iterator
     {
         return count($this->keys);
     }
+
+    public function map(callable $callback)
+    {
+        return array_map($callback, $this->items);
+    }
 }

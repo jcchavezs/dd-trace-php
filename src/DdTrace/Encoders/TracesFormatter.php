@@ -9,12 +9,14 @@ use Iterator;
 
 class TracesFormatter
 {
-    /** @return Iterator */
     public function __invoke(TracesBuffer $tracesBuffer)
     {
-        /** @var SpansCollection $spansCollection */
-        foreach ($tracesBuffer as $spansCollection) {
-            yield $spansCollection->map(function(Span $span) {
+        if ($tracesBuffer->count() === 0) {
+            return [];
+        }
+
+        return $tracesBuffer->map(function(SpansCollection $spansCollection) {
+            return $spansCollection->map(function(Span $span) {
                 return [
                         'trace_id' => $span->traceId(),
                         'span_id' => $span->spanId(),
@@ -28,6 +30,6 @@ class TracesFormatter
                         'error' => $span->error()
                     ] + ($span->meta() ? ['meta' => $span->meta()] : []);
             });
-        }
+        });
     }
 }
