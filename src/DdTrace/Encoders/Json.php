@@ -10,9 +10,9 @@ final class Json implements Encoder
     private $encodedContent;
     private $tracesFormatter;
 
-    public function __construct()
+    public function __construct(TracesFormatter $tracesFormatter)
     {
-        $this->tracesFormatter = new TracesFormatter;
+        $this->tracesFormatter = $tracesFormatter;
     }
 
     public function encodeTraces(TracesBuffer $traces)
@@ -30,7 +30,6 @@ final class Json implements Encoder
         return $this->encodedContent;
     }
 
-    /** @return string */
     public function contentType()
     {
         return "application/json";

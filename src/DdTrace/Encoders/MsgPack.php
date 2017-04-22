@@ -8,14 +8,14 @@ use MessagePack\Packer;
 
 final class MsgPack implements Encoder
 {
-    private $encodedContent;
     private $packer;
     private $tracesFormatter;
+    private $encodedContent;
 
-    public function __construct()
+    public function __construct(TracesFormatter $tracesFormatter, Packer $packer)
     {
-        $this->packer = new Packer;
-        $this->tracesFormatter = new TracesFormatter;
+        $this->tracesFormatter = $tracesFormatter;
+        $this->packer = $packer;
     }
 
     public function encodeTraces(TracesBuffer $traces)
@@ -33,7 +33,6 @@ final class MsgPack implements Encoder
         return $this->encodedContent;
     }
 
-    /** @return string */
     public function contentType()
     {
         return "application/msgpack";

@@ -8,14 +8,16 @@ use MessagePack\Packer;
 final class MsgPackFactory implements EncoderFactory
 {
     private $packer;
+    private $tracesFormatter;
 
-    public function __construct(Packer $packer)
+    public function __construct()
     {
-        $this->packer = $packer;
+        $this->packer = new Packer;
+        $this->tracesFormatter = new TracesFormatter;
     }
 
     public function build()
     {
-        return new MsgPack;
+        return new MsgPack($this->tracesFormatter, $this->packer);
     }
 }
