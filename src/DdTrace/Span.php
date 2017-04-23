@@ -100,6 +100,11 @@ class Span
         return $this->name;
     }
 
+    public function withName($name)
+    {
+        $this->name = $name;
+    }
+
     public function resource()
     {
         return $this->resource;
