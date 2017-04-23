@@ -2,8 +2,10 @@
 
 namespace DdTrace;
 
+use DdTrace\Transports\Noop as NoopTransport;
 use Exception;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 final class Tracer implements TracerInterface
 {
@@ -25,6 +27,11 @@ final class Tracer implements TracerInterface
         $this->transport = $transport;
         $this->logger = $logger;
         $this->debugLoggingEnabled = $debugLoggingEnabled;
+    }
+
+    public static function noop()
+    {
+        return new self(new Buffer, new NullLogger, new NoopTransport);
     }
 
     /** @return Span */
