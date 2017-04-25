@@ -19,7 +19,7 @@
     ],
     "minimum-stability": "stable",
     "autoload": {
-        "psr-4": {"DdTrace\\": "./src/DdTrace"}
+        "psr-4": {"DdTrace\\": "./src/DdTrace/"}
     },
     "autoload-dev": {
         "psr-4": {"DdTraceTests\\": "./tests/"}
