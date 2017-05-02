@@ -16,6 +16,7 @@ final class Tracer implements TracerInterface
     private $transport;
     private $servicesModified;
     private $services;
+    private $meta = [];
 
     public function __construct(
         Buffer $buffer,
@@ -37,13 +38,25 @@ final class Tracer implements TracerInterface
     /** @return Span */
     public function createRootSpan($name, $service, $resource)
     {
-        return Span::createAsRoot($this, $name, $service, $resource);
+        $span = Span::createAsRoot($this, $name, $service, $resource);
+
+        array_walk($this->meta, function($value, $key) use ($span) {
+            $span->setMeta($key, $value);
+        });
+
+        return $span;
     }
 
     /** @return Span */
     public function createChildSpan($name, Span $parent)
     {
-        return Span::createAsChildOf($this, $name, $parent);
+        $span = Span::createAsChildOf($this, $name, $parent);
+
+        array_walk($this->meta, function($value, $key) use ($span) {
+            $span->setMeta($key, $value);
+        });
+
+        return $span;
     }
 
     public function record(Span $span)
@@ -120,6 +133,16 @@ final class Tracer implements TracerInterface
     public function disableDebugLogging()
     {
         $this->debugLoggingEnabled = false;
+    }
+
+    public function meta()
+    {
+        return $this->meta;
+    }
+
+    public function setMeta($key, $value)
+    {
+        $this->meta[(string) $key] = (string) $value;
     }
 
     private function flushServices()
