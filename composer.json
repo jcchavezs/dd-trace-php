@@ -9,7 +9,7 @@
         "guzzlehttp/guzzle": "~6.0",
         "jcchavezs/tracing-context": "^0.1.0",
         "rybakit/msgpack": "^0.2.2",
-        "symfony/polyfill-php70": "^1.3"
+        "symfony/polyfill-php70": "^1.2"
     },
     "license": "GPL-3.0",
     "authors": [
