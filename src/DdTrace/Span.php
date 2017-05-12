@@ -2,9 +2,9 @@
 
 namespace DdTrace;
 
-use Exception;
 use Nanotime\Nanotime;
 use Nanotime\NanotimeInterval;
+use Throwable;
 use TracingContext\TracingContext;
 
 class Span
@@ -145,7 +145,7 @@ class Span
         $this->metrics[$key] = $value;
     }
 
-    public function setError(Exception $e)
+    public function setError(Throwable $e)
     {
         $this->error = 1;
         $this->setMeta(self::ERROR_MSG_KEY, $e->getMessage());
@@ -174,7 +174,7 @@ class Span
         $this->tracer->record($this);
     }
 
-    public function finishWithError(Exception $e)
+    public function finishWithError(Throwable $e)
     {
         $this->setError($e);
         $this->finish();
