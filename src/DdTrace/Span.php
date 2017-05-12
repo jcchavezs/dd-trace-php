@@ -2,6 +2,8 @@
 
 namespace DdTrace;
 
+use Exception;
+use InvalidArgumentException;
 use Nanotime\Nanotime;
 use Nanotime\NanotimeInterval;
 use Throwable;
@@ -145,12 +147,18 @@ class Span
         $this->metrics[$key] = $value;
     }
 
-    public function setError(Throwable $e)
+    public function setError($e)
     {
-        $this->error = 1;
-        $this->setMeta(self::ERROR_MSG_KEY, $e->getMessage());
-        $this->setMeta(self::ERROR_TYPE_KEY, get_class($e));
-        $this->setMeta(self::ERROR_STACK_KEY, $e->getTraceAsString());
+        if ($e instanceof Exception || $e instanceof Throwable) {
+            $this->error = 1;
+            $this->setMeta(self::ERROR_MSG_KEY, $e->getMessage());
+            $this->setMeta(self::ERROR_TYPE_KEY, get_class($e));
+            $this->setMeta(self::ERROR_STACK_KEY, $e->getTraceAsString());
+        }
+
+        throw new InvalidArgumentException(
+            sprintf('Error should be either Exception or Throwable, got %s.', gettype($e))
+        );
     }
 
     public function meta()
@@ -174,7 +182,7 @@ class Span
         $this->tracer->record($this);
     }
 
-    public function finishWithError(Throwable $e)
+    public function finishWithError($e)
     {
         $this->setError($e);
         $this->finish();
