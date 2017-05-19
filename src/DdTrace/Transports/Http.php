@@ -62,7 +62,7 @@ class Http implements Transport
                 || $responseStatusCode == self::STATUS_CODE_UNSUPPORTED_MEDIA_TYPE
             ) {
                 /** @TODO: Downgrade for API missing. */
-                $this->logger->error("calling the endpoint '%s' but received %d.", $this->traceUrl, $responseStatusCode);
+                $this->logger->error(sprintf("calling the endpoint '%s' but received %d.", $this->traceUrl, $responseStatusCode));
             }
 
         } catch (BadResponseException $e) {
@@ -96,7 +96,7 @@ class Http implements Transport
                 || $responseStatusCode == self::STATUS_CODE_UNSUPPORTED_MEDIA_TYPE
             ) {
                 /** @TODO: Downgrade for API missing. */
-                $this->logger->error("calling the endpoint '%s' but received %d.", $this->traceUrl, $responseStatusCode);
+                $this->logger->error(sprintf("calling the endpoint '%s' but received %d.", $this->traceUrl, $responseStatusCode));
             }
         } catch (BadResponseException $e) {
             $response = $e->getResponse();
