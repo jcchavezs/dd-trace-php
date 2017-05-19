@@ -14,6 +14,7 @@ class Span
     const ERROR_MSG_KEY = 'error.msg';
     const ERROR_TYPE_KEY = 'error.type';
     const ERROR_STACK_KEY = 'error.stack';
+    const ERROR_VALUE = 1;
 
     private $traceId;
     private $spanId;
@@ -149,16 +150,16 @@ class Span
 
     public function setError($e)
     {
-        if ($e instanceof Exception || $e instanceof Throwable) {
-            $this->error = 1;
-            $this->setMeta(self::ERROR_MSG_KEY, $e->getMessage());
-            $this->setMeta(self::ERROR_TYPE_KEY, get_class($e));
-            $this->setMeta(self::ERROR_STACK_KEY, $e->getTraceAsString());
+        if (!($e instanceof Exception || $e instanceof Throwable)) {
+            throw new InvalidArgumentException(
+                sprintf('Error should be either Exception or Throwable, got %s.', gettype($e))
+            );
         }
 
-        throw new InvalidArgumentException(
-            sprintf('Error should be either Exception or Throwable, got %s.', gettype($e))
-        );
+        $this->error = self::ERROR_VALUE;
+        $this->setMeta(self::ERROR_MSG_KEY, $e->getMessage());
+        $this->setMeta(self::ERROR_TYPE_KEY, get_class($e));
+        $this->setMeta(self::ERROR_STACK_KEY, $e->getTraceAsString());
     }
 
     public function meta()
@@ -169,6 +170,11 @@ class Span
     public function error()
     {
         return $this->error;
+    }
+
+    public function hasError()
+    {
+        return ($this->error == self::ERROR_VALUE);
     }
 
     public function finish()
