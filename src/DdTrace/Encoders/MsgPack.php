@@ -19,8 +19,19 @@ final class MsgPack implements Encoder
     }
 
     public function encodeTraces(TracesBuffer $traces)
-    {
-        $this->encodedContent = $this->packer->pack($this->tracesFormatter->__invoke($traces));
+    {  
+        $traces = $this->tracesFormatter->__invoke($traces);
+
+        foreach($traces as &$trace) {
+            foreach($trace as &$span) {
+                $span["trace_id"] = (int) $span["trace_id"];
+                $span["span_id"] = (int) $span["span_id"];
+                $span["parent_id"] = (int) $span["parent_id"];
+            }
+        }
+
+        $this->encodedContent = $this->packer->pack($traces);
+       
     }
 
     public function encodeServices(array $services)

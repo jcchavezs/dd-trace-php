@@ -16,8 +16,8 @@ class Span
     const ERROR_STACK_KEY = 'error.stack';
     const ERROR_VALUE = 1;
 
-    private $traceId;
-    private $spanId;
+    private $traceId = '';
+    private $spanId = '';
     private $name = '';
     private $resource;
     private $service;
@@ -26,7 +26,7 @@ class Span
 
     /** @var NanotimeInterval */
     private $duration;
-    private $parentId;
+    private $parentId = '';
     private $error = 0;
     private $isSampled = true;
     private $meta = [];
@@ -45,16 +45,16 @@ class Span
     ) {
 
         $start = Nanotime::now();
-        $spanId = $spanId ?: self::randomId();
+        $spanId = $spanId ?: (string) self::randomId(); //casting as a string to keep ids consistant.
         $traceId = $traceId ?: $spanId;
 
         $this->name = (string) $name;
         $this->service = (string) $service;
         $this->resource = (string) $resource;
         $this->start = $start;
-        $this->spanId = (int) $spanId;
-        $this->traceId = (int) $traceId;
-        $this->parentId = (int) $parentId;
+        $this->spanId = (string) $spanId;   //casting as a string to keep uint64 ids passed in from overflowing PHP_INT_MAX
+        $this->traceId = (string) $traceId; //casting as a string to keep uint64 ids passed in from overflowing PHP_INT_MAX
+        $this->parentId = (string) $parentId; //casting as a string to keep uint64 ids passed in from overflowing PHP_INT_MAX
         $this->tracer = $tracer;
     }
 
@@ -126,6 +126,10 @@ class Span
     public function type()
     {
         return $this->type;
+    }
+
+    public function setType($type) {
+        $this->type = $type;
     }
 
     public function start()
