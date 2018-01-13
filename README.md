@@ -1,6 +1,8 @@
 # DataDog Trace PHP
 
 [![Build Status](https://travis-ci.org/jcchavezs/dd-trace-php.svg?branch=master)](https://travis-ci.org/jcchavezs/dd-trace-php)
+[![Total Downloads](https://poser.pugx.org/jcchavezs/dd-trace/downloads)](https://packagist.org/packages/jcchavezs/dd-trace)
+[![License](https://poser.pugx.org/jcchavezs/dd-trace/license)](https://packagist.org/packages/jcchavezs/dd-trace)
 
 This library contains Datadog's tracing client. It is used to trace requests as they flow across web servers, databases and microservices so that developers have visibility into bottlenecks and troublesome requests.
 
