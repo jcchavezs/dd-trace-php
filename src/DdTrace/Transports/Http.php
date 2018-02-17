@@ -68,9 +68,9 @@ class Http implements Transport
         } catch (BadResponseException $e) {
             $response = $e->getResponse();
         } catch (Exception $e) {
-            $response = new Response(self::STATUS_CODE_SERVER_ERROR, $e->getMessage());
+            $response = new Response(self::STATUS_CODE_SERVER_ERROR, [], $e->getMessage());
         } catch (Throwable $e) {
-            $response = new Response(self::STATUS_CODE_SERVER_ERROR, $e->getMessage());
+            $response = new Response(self::STATUS_CODE_SERVER_ERROR, [], $e->getMessage());
         } finally {
             return $response;
         }
@@ -101,7 +101,7 @@ class Http implements Transport
         } catch (BadResponseException $e) {
             $response = $e->getResponse();
         } catch (Exception $e) {
-            $response = new Response(self::STATUS_CODE_SERVER_ERROR, $e->getMessage());
+            $response = new Response(self::STATUS_CODE_SERVER_ERROR, [], $e->getMessage());
         } finally {
             return $response;
         }
