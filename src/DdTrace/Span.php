@@ -95,7 +95,7 @@ class Span
 
     public function setMeta($key, $value)
     {
-        $this->meta[$key] = $value;
+        $this->meta[$key] = (string) $value;
     }
 
     public function name()
