@@ -152,6 +152,11 @@ class Span
         $this->metrics[$key] = $value;
     }
 
+    public function setResource($resource)
+    {
+        $this->resource = (string) $resource;
+    }
+
     public function setError($e)
     {
         if (!($e instanceof Exception || $e instanceof Throwable)) {
